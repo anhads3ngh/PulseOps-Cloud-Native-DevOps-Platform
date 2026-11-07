@@ -5,7 +5,10 @@ resource "aws_dynamodb_table" "jobs" {
   name         = "${local.name}-jobs"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "pk"
-  attribute { name = "pk", type = "S" }
+  attribute {
+    name = "pk"
+    type = "S"
+  }
   point_in_time_recovery { enabled = false }
   server_side_encryption { enabled = true }
   tags = local.tags
@@ -44,7 +47,7 @@ resource "aws_cloudwatch_log_group" "worker" {
 resource "aws_iam_role" "api" {
   name = "${local.name}-api-role"
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
+    Version   = "2012-10-17"
     Statement = [{ Effect = "Allow", Principal = { Service = "lambda.amazonaws.com" }, Action = "sts:AssumeRole" }]
   })
   tags = local.tags
@@ -52,7 +55,7 @@ resource "aws_iam_role" "api" {
 resource "aws_iam_role" "worker" {
   name = "${local.name}-worker-role"
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
+    Version   = "2012-10-17"
     Statement = [{ Effect = "Allow", Principal = { Service = "lambda.amazonaws.com" }, Action = "sts:AssumeRole" }]
   })
   tags = local.tags
@@ -99,16 +102,16 @@ resource "aws_lambda_function" "api" {
   image_config { command = ["pulseops.lambda_adapter.handler"] }
   environment {
     variables = {
-      DYNAMO_TABLE    = aws_dynamodb_table.jobs.name
-      SQS_QUEUE_URL   = aws_sqs_queue.jobs.url
-      SQS_QUEUE_NAME  = aws_sqs_queue.jobs.name
-      DEMO_API_KEY    = var.demo_api_key
-      MAX_ATTEMPTS    = "4"
+      DYNAMO_TABLE   = aws_dynamodb_table.jobs.name
+      SQS_QUEUE_URL  = aws_sqs_queue.jobs.url
+      SQS_QUEUE_NAME = aws_sqs_queue.jobs.name
+      DEMO_API_KEY   = var.demo_api_key
+      MAX_ATTEMPTS   = "4"
     }
   }
   lifecycle { ignore_changes = [image_uri] } # code deployed by GitHub CD via image SHA
   depends_on = [aws_iam_role_policy.api, aws_iam_role_policy_attachment.api_logs, aws_cloudwatch_log_group.api]
-  tags = local.tags
+  tags       = local.tags
 }
 
 resource "aws_lambda_function" "worker" {
@@ -129,7 +132,7 @@ resource "aws_lambda_function" "worker" {
   }
   lifecycle { ignore_changes = [image_uri] }
   depends_on = [aws_iam_role_policy.worker, aws_iam_role_policy_attachment.worker_logs, aws_cloudwatch_log_group.worker]
-  tags = local.tags
+  tags       = local.tags
 }
 
 resource "aws_lambda_event_source_mapping" "queue" {

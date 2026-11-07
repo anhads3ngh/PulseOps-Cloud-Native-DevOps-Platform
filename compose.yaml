@@ -1,0 +1,38 @@
+name: pulseops
+x-aws-env: &aws-env
+  AWS_REGION: ca-central-1
+  AWS_ACCESS_KEY_ID: testing
+  AWS_SECRET_ACCESS_KEY: testing
+  AWS_ENDPOINT_URL: http://moto:5000
+  DYNAMO_TABLE: pulseops-jobs
+  SQS_QUEUE_NAME: pulseops-jobs
+  DEMO_API_KEY: demo-local-key
+  MAX_ATTEMPTS: 4
+services:
+  moto:
+    image: motoserver/moto:5.2.5
+    ports:
+      - "127.0.0.1:5000:5000"
+    environment:
+      MOTO_PORT: 5000
+  bootstrap:
+    build: .
+    command: ["python", "-m", "pulseops.bootstrap"]
+    environment: *aws-env
+    depends_on:
+      - moto
+  api:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment: *aws-env
+    depends_on:
+      bootstrap:
+        condition: service_completed_successfully
+  worker:
+    build: .
+    command: ["python", "-m", "pulseops.local_worker"]
+    environment: *aws-env
+    depends_on:
+      bootstrap:
+        condition: service_completed_successfully

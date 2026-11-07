@@ -1,0 +1,13 @@
+.git
+.github
+.env*
+.terraform
+*.tfstate*
+__pycache__
+.pytest_cache
+.ruff_cache
+tests
+infra
+docs
+README.md
+requirements-dev.txt

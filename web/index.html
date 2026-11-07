@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a1020" />
+  <meta name="description" content="PulseOps — cloud-native publishing reliability laboratory" />
+  <title>PulseOps • Delivery Control Center</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <div class="layout">
+    <aside class="sidebar">
+      <a href="/" class="brand" aria-label="PulseOps home">
+        <span class="brand-icon"><svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M3 19L10 7l5 9 5-7 5 10" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="19" r="2" fill="currentColor"/></svg></span>
+        <span>pulse<span class="brand-accent">ops</span><small>CLOUD RELIABILITY</small></span>
+      </a>
+      <div class="nav-caption">WORKSPACE</div>
+      <nav aria-label="Navigation">
+        <a href="#overview" class="nav-item active"><span>◫</span> Overview <i class="nav-badge">LIVE</i></a>
+        <a href="#create" class="nav-item"><span>⌁</span> Chaos Lab</a>
+        <a href="#activity" class="nav-item"><span>≡</span> Delivery Log</a>
+        <a href="/docs" target="_blank" rel="noopener" class="nav-item"><span>⌘</span> API Docs <b>↗</b></a>
+      </nav>
+      <div class="side-bottom">
+        <div class="service-status"><span class="ping"><span></span></span><div><strong>Pipeline online</strong><small>Simulated publishing · v1.0</small></div></div>
+        <p>BUILT FOR REAL-WORLD FAILURE</p>
+        <div class="build-foot">Event-driven · Observable · Idempotent</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="breadcrumbs">PLATFORM <span>/</span> OPERATIONS <span>/</span> <strong>OVERVIEW</strong></div>
+        <div class="top-actions"><span id="sync-time" class="sync-time">Not synced</span><button id="refresh" class="icon-button" aria-label="Refresh jobs" title="Refresh data">↻</button><div class="avatar">P</div></div>
+      </header>
+      <div class="content">
+        <section class="intro" id="overview">
+          <div><span class="eyebrow"><span class="mini-dot"></span> OPERATIONAL COMMAND CENTER</span><h1>Delivery, <em>under control.</em></h1><p>Observe every job. Inject failure. Watch your infrastructure recover.</p></div>
+          <a class="ghost-link" href="https://github.com/new" target="_blank" rel="noopener">View architecture <span>↗</span></a>
+        </section>
+        <div class="note"><span class="note-icon">i</span><span><b>Simulation mode</b> — Jobs never publish to real social accounts. All AWS calls use your account only if you deploy the cloud stack.</span></div>
+        <div class="metrics">
+          <article class="metric"><div class="metric-heading">TOTAL EVENTS <span class="metric-symbol">↗</span></div><div class="metric-number" id="m-total">—</div><div class="metric-foot"><span class="subpill cyan">●</span> Enqueued jobs</div></article>
+          <article class="metric"><div class="metric-heading">SUCCESSFUL DELIVERIES <span class="metric-symbol">✓</span></div><div class="metric-number" id="m-published">—</div><div class="metric-foot"><span class="subpill green">●</span> Completed simulations</div></article>
+          <article class="metric"><div class="metric-heading">RECOVERY ATTEMPTS <span class="metric-symbol">↻</span></div><div class="metric-number" id="m-retries">—</div><div class="metric-foot"><span class="subpill amber">●</span> Retry operations</div></article>
+          <article class="metric"><div class="metric-heading">DELIVERY SUCCESS RATE <span class="metric-symbol">◈</span></div><div class="metric-number"><span id="m-success">—</span><small>%</small></div><div class="metric-foot"><span class="subpill violet">●</span> Terminal jobs</div></article>
+        </div>
+        <div class="primary-grid">
+          <section class="panel flow-panel"><div class="panel-header"><div><div class="panel-kicker">YOUR INFRASTRUCTURE</div><h2>Delivery pipeline</h2><p>Every job moves through a resilient, asynchronous workflow.</p></div><span class="tag"><span class="tag-dot"></span> EVENT DRIVEN</span></div>
+            <div class="pipeline"><div class="pipe-node"><div class="node-orb node-api">{ }</div><strong>API Gateway</strong><span>Ingestion</span></div><div class="pipe-link"><span>→</span></div><div class="pipe-node"><div class="node-orb node-queue">≋</div><strong>Amazon SQS</strong><span>Queue + DLQ</span></div><div class="pipe-link"><span>→</span></div><div class="pipe-node"><div class="node-orb node-worker">⚡</div><strong>Lambda Worker</strong><span>Auto retry</span></div><div class="pipe-link"><span>→</span></div><div class="pipe-node"><div class="node-orb node-data">◇</div><strong>DynamoDB</strong><span>Job state</span></div></div>
+            <div class="pipeline-footer"><div><span class="pulse-dot"></span> <strong>Automatic recovery enabled</strong><span class="muted"> · At-least-once delivery</span></div><a href="/docs" target="_blank" rel="noopener">Explore API ↗</a></div>
+          </section>
+          <section class="panel state-panel"><div class="panel-header"><div><div class="panel-kicker">LIVE JOB DISTRIBUTION</div><h2>Pipeline health</h2></div><span class="faint-icon">◌</span></div><div class="donut-row"><div class="donut" id="donut"><div><strong id="donut-count">0</strong><small>JOBS</small></div></div><div class="legend"><div><i class="legend-circle success"></i> Published <b id="legend-published">0</b></div><div><i class="legend-circle pending"></i> Queued <b id="legend-queued">0</b></div><div><i class="legend-circle processing"></i> Processing <b id="legend-processing">0</b></div><div><i class="legend-circle failed"></i> Failed <b id="legend-failed">0</b></div></div></div></section>
+        </div>
+        <div class="secondary-grid">
+          <section class="panel create-panel" id="create"><div class="panel-header"><div><div class="panel-kicker">CHAOS ENGINEERING LAB</div><h2>Inject a new delivery</h2><p>Test normal traffic, transient outages, and permanent failure.</p></div><span class="beaker">⚗</span></div>
+            <label for="api-key" class="input-label">DEMO WRITE KEY</label><div class="key-input"><input id="api-key" type="password" placeholder="Enter X-Demo-Key (local: demo-local-key)" autocomplete="off"/><button id="reveal-key" aria-label="Show or hide key" title="Show/hide key">◉</button></div>
+            <form id="job-form"><div class="form-line"><label class="input-label" for="channel">TARGET CHANNEL</label><label class="input-label" for="failure">FAILURE INJECTION</label></div><div class="form-line"><select id="channel"><option value="linkedin">LinkedIn</option><option value="instagram">Instagram</option><option value="x">X (Twitter)</option></select><select id="failure"><option value="none">Normal · Succeeds</option><option value="transient">HTTP 503 · Recovers</option><option value="permanent">Permanent · DLQ</option></select></div><label class="input-label" for="content">SIMULATED CONTENT</label><textarea id="content" maxlength="280" rows="3" placeholder="🚀 We just shipped a reliable, observable delivery pipeline..."></textarea><div class="form-bottom"><span id="char-count">0 / 280</span><button type="submit" class="primary-button" id="send-job">Queue delivery <span>↗</span></button></div></form><div class="demo-banner"><div><strong>Need a live demonstration?</strong><p>Inject a batch with successful jobs, retries, and a DLQ case.</p></div><button id="demo-batch">Run chaos demo ↗</button></div>
+          </section>
+          <section class="panel activity-panel" id="activity"><div class="panel-header"><div><div class="panel-kicker">AUDITABLE EVENT HISTORY</div><h2>Recent deliveries</h2></div><span class="tag">AUTO REFRESH · 5S</span></div><div class="activity-head"><span>EVENT / JOB</span><span>ATTEMPTS</span><span>STATE</span></div><div id="jobs" class="jobs"><div class="empty"><span>◌</span><strong>Nothing in the queue yet</strong><p>Submit a job to see the pipeline in action.</p></div></div><div class="activity-foot"><span id="job-count">Showing 0 deliveries</span><span>Polling every 5 seconds</span></div></section>
+        </div>
+        <footer><span>PULSEOPS / ENGINEERING DEMO</span><span>Built for resilience. Instrumented for clarity.</span></footer>
+      </div>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

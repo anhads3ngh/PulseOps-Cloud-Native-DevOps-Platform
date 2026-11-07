@@ -1,0 +1,7 @@
+# AWS-managed Lambda Python runtime includes the runtime interface client.
+FROM public.ecr.aws/lambda/python:3.12
+COPY requirements.txt ${LAMBDA_TASK_ROOT}/
+RUN pip install --no-cache-dir -r ${LAMBDA_TASK_ROOT}/requirements.txt
+COPY pulseops/ ${LAMBDA_TASK_ROOT}/pulseops/
+COPY web/ ${LAMBDA_TASK_ROOT}/web/
+CMD ["pulseops.lambda_adapter.handler"]
